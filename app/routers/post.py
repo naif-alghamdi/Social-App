@@ -11,11 +11,9 @@ router = APIRouter(
 )
 
 #Get All posts
-@router.get("/", response_model=List[schemas.PostOut]) #response_model=List[schemas.PostOut]
+@router.get("/", response_model=List[schemas.PostOut])
 def get_post(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user), limit: int = 10, skip: int = 0, search: Optional[str] = ""):
 
-    # Query the database to retrieve all posts
-    # posts = db.query(models.posts).filter(models.posts.owner_id == current_user.id, models.posts.title.contains(search)).limit(limit).offset(skip).all()
 
     results = db.query(models.posts, func.count(models.Votes.post_id).label("vote")).join(models.Votes, models.posts.id == models.Votes.post_id, isouter=True).group_by(models.posts.id).filter(models.posts.owner_id == current_user.id, models.posts.title.contains(search)).limit(limit).offset(skip).all()
 
@@ -26,8 +24,6 @@ def get_post(db: Session = Depends(get_db), current_user: int = Depends(oauth2.g
 #Return One POST
 @router.get("/{id}", response_model=schemas.PostOut)
 def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-
-    # post = db.query(models.posts).filter(models.posts.id == current_user.id).first() # save the POTS
 
     post = db.query(models.posts, func.count(models.Votes.post_id).label("vote")).join(models.Votes, models.posts.id == models.Votes.post_id, isouter=True).group_by(models.posts.id).filter(models.posts.id == id).first()
 

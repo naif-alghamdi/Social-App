@@ -9,7 +9,6 @@ models.Base.metadata.create_all(bind=engine) # Create the tables in the database
 app = FastAPI()
 
 origins = ["*"]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
