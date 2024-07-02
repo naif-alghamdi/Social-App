@@ -1,4 +1,4 @@
-Socail-App (Backend API Devolper with Fast API)
+Socail-App (Backend API Deveolped with Fast API)
 
 Stack used: FastAPI (python backend frame work) - Postgressql DB.
 
